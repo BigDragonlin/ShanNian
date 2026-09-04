@@ -21,7 +21,8 @@ components.minute = 20
 let formatted = EntryWriter.formattedEntry(
     text: "  想到一个新点子  ",
     date: components.date!,
-    location: "上海市 徐汇区"
+    location: "上海市 徐汇区",
+    timeZone: components.timeZone!
 )
 require(formatted == "- 2026年9月4日 15:20｜上海市 徐汇区｜想到一个新点子\n", "记录格式不正确")
 

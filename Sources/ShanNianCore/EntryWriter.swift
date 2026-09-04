@@ -2,9 +2,15 @@ import Foundation
 
 /// 把一条闪念整理成 Markdown，并安全地追加到指定文档末尾。
 public enum EntryWriter {
-    public static func formattedEntry(text: String, date: Date, location: String) -> String {
+    public static func formattedEntry(
+        text: String,
+        date: Date,
+        location: String,
+        timeZone: TimeZone = .current
+    ) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "zh_CN")
+        formatter.timeZone = timeZone
         formatter.dateFormat = "yyyy年M月d日 HH:mm"
 
         let cleanText = text.trimmingCharacters(in: .whitespacesAndNewlines)

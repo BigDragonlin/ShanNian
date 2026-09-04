@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: 获取源码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 验证 Markdown 写入功能
         run: swift run VerifyShanNian
@@ -28,7 +28,7 @@ jobs:
         run: ./scripts/create-dmg.sh
 
       - name: 上传构建结果
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ShanNian-macOS-DMG
           path: outputs/ShanNian-macOS.dmg
@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: 下载已经构建好的 DMG
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ShanNian-macOS-DMG
           path: release
