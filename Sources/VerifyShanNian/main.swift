@@ -33,7 +33,13 @@ defer { try? FileManager.default.removeItem(at: fileURL) }
 
 do {
     try Data("旧内容".utf8).write(to: fileURL)
-    try EntryWriter.append(text: "新闪念", date: components.date!, location: "上海市 徐汇区", to: fileURL)
+    try EntryWriter.append(
+        text: "新闪念",
+        date: components.date!,
+        location: "上海市 徐汇区",
+        timeZone: components.timeZone!,
+        to: fileURL
+    )
     let result = try String(contentsOf: fileURL, encoding: .utf8)
     require(result == "旧内容\n- 2026年9月4日 15:20｜上海市 徐汇区｜新闪念\n", "追加内容或换行不正确")
     print("全部检查通过：时间、地点、文字和追加写入均正确。")

@@ -19,8 +19,14 @@ public enum EntryWriter {
         return "- \(formatter.string(from: date))｜\(shownLocation)｜\(cleanText)\n"
     }
 
-    public static func append(text: String, date: Date = Date(), location: String, to fileURL: URL) throws {
-        let entry = formattedEntry(text: text, date: date, location: location)
+    public static func append(
+        text: String,
+        date: Date = Date(),
+        location: String,
+        timeZone: TimeZone = .current,
+        to fileURL: URL
+    ) throws {
+        let entry = formattedEntry(text: text, date: date, location: location, timeZone: timeZone)
         let fileManager = FileManager.default
 
         // 新建的空文档可以直接写入；已有文档则从末尾继续追加。
