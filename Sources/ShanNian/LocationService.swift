@@ -3,7 +3,7 @@ import Foundation
 
 /// 获取 Mac 当前地点，并把经纬度转换成容易阅读的城市、区域名称。
 @MainActor
-final class LocationService: NSObject, ObservableObject, @preconcurrency CLLocationManagerDelegate {
+final class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published private(set) var placeName = "地点获取中"
     @Published private(set) var isLocating = true
 
@@ -31,8 +31,10 @@ final class LocationService: NSObject, ObservableObject, @preconcurrency CLLocat
         }
     }
 
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        begin()
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        Task { @MainActor [weak self] in
+            self?.begin()
+        }
     }
 
     nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
