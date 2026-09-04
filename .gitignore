@@ -1,0 +1,13 @@
+# macOS 自动生成的文件
+.DS_Store
+
+# Swift 编译缓存
+.build/
+work/
+
+# 本地构建出来的软件；GitHub Actions 会重新生成并提供下载
+outputs/
+
+# Xcode 的个人设置
+*.xcuserstate
+xcuserdata/
