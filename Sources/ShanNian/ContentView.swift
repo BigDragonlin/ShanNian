@@ -33,9 +33,11 @@ struct ContentView: View {
                 }
             }
 
-            TextField("此刻想到了什么？", text: $thought)
+            // 仍然是按回车保存，但长文字会自动换行，并最多增高到八行。
+            TextField("此刻想到了什么？", text: $thought, axis: .vertical)
                 .textFieldStyle(.plain)
                 .font(.system(size: 20))
+                .lineLimit(1...6)
                 .padding(14)
                 .background(.background.opacity(0.75), in: RoundedRectangle(cornerRadius: 12))
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(.quaternary, lineWidth: 1))
@@ -121,7 +123,7 @@ struct ContentView: View {
         panel.canCreateDirectories = true
         if panel.runModal() == .OK, let url = panel.url {
             do {
-                try Data().write(to: url)
+                try Data(EntryWriter.documentHeader.utf8).write(to: url)
                 settings.remember(document: url)
                 statusIsError = false
                 statusText = "新文档已建好，可以开始记录"

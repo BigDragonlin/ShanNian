@@ -2,6 +2,9 @@ import Foundation
 
 /// 把一条闪念整理成 Markdown，并安全地追加到指定文档末尾。
 public enum EntryWriter {
+    /// 新文档统一使用的标题和说明。
+    public static let documentHeader = "# 闪念记录\n\n> 随手记录当下的想法。每条记录包含时间、地点和正文。\n\n"
+
     public static func formattedEntry(
         text: String,
         date: Date,
@@ -16,7 +19,7 @@ public enum EntryWriter {
         let cleanText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanLocation = location.trimmingCharacters(in: .whitespacesAndNewlines)
         let shownLocation = cleanLocation.isEmpty ? "地点获取中" : cleanLocation
-        return "- \(formatter.string(from: date))｜\(shownLocation)｜\(cleanText)\n"
+        return "## \(formatter.string(from: date))\n\n📍 **地点：** \(shownLocation)\n\n\(cleanText)\n\n---\n\n"
     }
 
     public static func append(
@@ -40,8 +43,10 @@ public enum EntryWriter {
         let oldData = try Data(contentsOf: fileURL)
         try handle.seekToEnd()
 
-        // 如果旧文档最后没有换行，先补一行，避免两条内容粘在一起。
-        if let lastByte = oldData.last, lastByte != 10 {
+        // 空文档先写入统一标题；已有内容则从下一行开始追加。
+        if oldData.isEmpty {
+            try handle.write(contentsOf: Data(documentHeader.utf8))
+        } else if let lastByte = oldData.last, lastByte != 10 {
             try handle.write(contentsOf: Data("\n".utf8))
         }
         try handle.write(contentsOf: Data(entry.utf8))
